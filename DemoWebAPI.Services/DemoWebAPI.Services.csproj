@@ -47,12 +47,22 @@
     </Compile>
     <Compile Include="Interface\Base\IEntityService.cs" />
     <Compile Include="Interface\Base\IService.cs" />
+    <Compile Include="Interface\Class1.cs" />
+    <Compile Include="Interface\IEntityServiceTemplate.cs">
+      <DependentUpon>IEntityServiceTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Implementation\EntityServiceTemplate.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>EntityServiceTemplate.cs</LastGenOutput>
+    </None>
+    <None Include="Interface\IEntityServiceTemplate.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>IEntityServiceTemplate.cs</LastGenOutput>
     </None>
   </ItemGroup>
   <ItemGroup>
