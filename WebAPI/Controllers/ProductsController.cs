@@ -14,6 +14,8 @@ namespace WebAPI.Controllers
        // ILogService loggerService;
         IEntityService<Product> _productservice;
 
+
+        ///
         //public ProductsController(ILogService loggerService, IProductService productService)
         //{
         //    this.loggerService = loggerService;
