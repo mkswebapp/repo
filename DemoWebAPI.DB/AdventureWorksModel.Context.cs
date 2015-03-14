@@ -12,12 +12,38 @@ namespace DemoWebAPI.DB
     using System;
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
+    /*
+    public static class ODataConfig
+    {
+            public static Microsoft.Data.Edm.IEdmModel GenerateEdmModel()
+            {
+                var builder = new ODataConventionModelBuilder();
+    
+                builder.EntitySet<ErrorLog>("ErrorLogs");
+                builder.EntitySet<Address>("Addresses");
+                builder.EntitySet<Customer>("Customers");
+                builder.EntitySet<CustomerAddress>("CustomerAddresses");
+                builder.EntitySet<Product>("Products");
+                builder.EntitySet<ProductCategory>("ProductCategories");
+                builder.EntitySet<ProductDescription>("ProductDescriptions");
+                builder.EntitySet<ProductModel>("ProductModels");
+                builder.EntitySet<ProductModelProductDescription>("ProductModelProductDescriptions");
+                builder.EntitySet<SalesOrderDetail>("SalesOrderDetails");
+                builder.EntitySet<SalesOrderHeader>("SalesOrderHeaders");
+                builder.EntitySet<BuildVersion>("BuildVersions");
+                   
+                return builder.GetEdmModel();
+    
+            }
+    }
+    */
     
     public partial class DemoWebAPIContext : DbContext
     {
         public DemoWebAPIContext()
             : base("name=DemoWebAPIContext")
         {
+           // this.Configuration.LazyLoadingEnabled = false;
         }
     
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

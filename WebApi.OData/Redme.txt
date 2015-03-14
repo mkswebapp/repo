@@ -1,0 +1,3 @@
+﻿Install-Package Microsoft.AspNet.OData -Version 5.4.0
+Update-Package -ProjectName DemoWebAPI.DB -Reinstall
+Install-Package Microsoft.AspNet.WebApi.HelpPage -Pre

@@ -12,15 +12,24 @@ namespace DemoWebAPI.DB
     using System;
     using System.Collections.Generic;
     
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    
     public partial class ProductModelProductDescription : BaseEntity
     {
+        [Key]
+        [Column(Order=1)]
         public int ProductModelID { get; set; }
+        [Key]
+        [Column(Order=2)]
         public int ProductDescriptionID { get; set; }
+        [Key]
+        [Column(Order=3)]
         public string Culture { get; set; }
         public System.Guid rowguid { get; set; }
         public System.DateTime ModifiedDate { get; set; }
     
-        public virtual ProductDescription ProductDescription { get; set; }
-        public virtual ProductModel ProductModel { get; set; }
+        public virtual ProductDescription ProductDescription { get;  set; }
+        public virtual ProductModel ProductModel { get;  set; }
     }
 }

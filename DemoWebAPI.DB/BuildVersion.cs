@@ -12,11 +12,22 @@ namespace DemoWebAPI.DB
     using System;
     using System.Collections.Generic;
     
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    
     public partial class BuildVersion : BaseEntity
     {
+        [Key]
+        [Column(Order=1)]
         public byte SystemInformationID { get; set; }
+        [Key]
+        [Column(Order=2)]
         public string Database_Version { get; set; }
+        [Key]
+        [Column(Order=3)]
         public System.DateTime VersionDate { get; set; }
+        [Key]
+        [Column(Order=4)]
         public System.DateTime ModifiedDate { get; set; }
     }
 }

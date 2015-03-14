@@ -1,4 +1,5 @@
 ﻿using DemoWebAPI.DB;
+using DemoWebAPI.Repository;
 using DemoWebAPI.Services.Interface;
 using System;
 using System.Collections.Generic;
@@ -6,21 +7,43 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.OData;
+using System.Web.Http.OData.Query;
 
 namespace WebAPI.Controllers
 {
+    public class ProductController : ODataController
+    {
+        IProductService _productservice;
+        IUnitOfWork _unitOfWork;
+
+          public ProductController(IProductService productService)
+        {
+          //  this.loggerService = loggerService;
+            this._productservice = productService;
+            
+
+        }
+        public PageResult<Product> Get(ODataQueryOptions<Product> queryOptions)
+        {
+            IQueryable results = queryOptions.ApplyTo(_productservice.GetAll().AsQueryable<Product>());
+            return new PageResult<Product>(results as IEnumerable<Product>, Request.GetNextPageLink(), Request.GetInlineCount());
+        }
+    }
     public class ProductsController : ApiController
     {
        // ILogService loggerService;
-        IEntityService<Product> _productservice;
+        IProductService _productservice;
+        IUnitOfWork _unitOfWork;
 
 
-        ///
-        //public ProductsController(ILogService loggerService, IProductService productService)
-        //{
-        //    this.loggerService = loggerService;
-        //    this._productservice = productService;
-        //}
+        public ProductsController(IProductService productService)
+        {
+          //  this.loggerService = loggerService;
+            this._productservice = productService;
+            
+
+        }
 
         /// <summary>
         /// To fetch Product by Category ID
@@ -30,7 +53,8 @@ namespace WebAPI.Controllers
         public IEnumerable<Product> GetProducts()
         {
            // loggerService.Logger().Info("Calling with null parameter as : id : " + id);
-            return _productservice.GetAll();// (id).AsQueryable<Product>();
+            var dat= _productservice.GetAll();// (id).AsQueryable<Product>();
+            return dat;
         }
 
         /// <summary>
@@ -41,9 +65,11 @@ namespace WebAPI.Controllers
         public Product GetProductByID(int id)
         {
             //loggerService.Logger().Info("Calling with null parameter as : id : " + id);
-            return _productservice.GetById(id);// (id).AsQueryable<Product>();
+            var product= _productservice.GetById(id);// (id).AsQueryable<Product>();
+            return product;
         }
 
+     
 
     }
 }

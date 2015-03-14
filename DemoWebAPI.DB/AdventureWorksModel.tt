@@ -24,6 +24,9 @@ foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection)
     BeginNamespace(code);
 #>
 <#=codeStringGenerator.UsingDirectives(inHeader: false)#>
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 <#=codeStringGenerator.EntityClassOpening(entity)#> : BaseEntity
 {
 <#
@@ -54,6 +57,7 @@ foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection)
         foreach (var complexProperty in complexProperties)
         {
 #>
+//2
         this.<#=code.Escape(complexProperty)#> = new <#=typeMapper.GetTypeName(complexProperty.TypeUsage)#>();
 <#
         }
@@ -62,12 +66,38 @@ foreach (var entity in typeMapper.GetItemsToGenerate<EntityType>(itemCollection)
 
 <#
     }
-
+//-------------1
+           var curCounter=1;
     var simpleProperties = typeMapper.GetSimpleProperties(entity);
     if (simpleProperties.Any())
     {
         foreach (var edmProperty in simpleProperties)
         {
+                bool isPrimaryKey = ef.IsKey(edmProperty);
+
+var attributes = new List<string>();
+  //  var isPartOfPrimaryKey = edmProperty.EntityType.KeyMembers.Contains(edmProperty);
+  // var primaryKeyHasMultipleColumns = edmProperty.EntityType.KeyMembers.Count > 1;
+                var ckey = ((EntityType)edmProperty.DeclaringType).KeyMembers;
+             
+#>
+<#
+if (isPrimaryKey)
+  {
+
+#>
+    [Key]
+<#
+if (ckey.Count > 1 )
+                    {
+                        #>
+    [Column(Order=<#=curCounter#>)]
+<#
+                    }
+                 
+                    curCounter++;
+ }
+
 #>
     <#=codeStringGenerator.Property(edmProperty)#>
 <#
@@ -286,17 +316,21 @@ public class CodeStringGenerator
             _code.SpaceAfter(Accessibility.ForSetter(edmProperty)));
     }
 
-    public string NavigationProperty(NavigationProperty navProp)
+     public string NavigationProperty(NavigationProperty navProp)
     {
         var endType = _typeMapper.GetTypeName(navProp.ToEndMember.GetEntityType());
         return string.Format(
             CultureInfo.InvariantCulture,
-            "{0} {1} {2} {{ {3}get; {4}set; }}",
+            "{0} {1} {2} {{ {3}get; {4} {5}set; }}",
             AccessibilityAndVirtual(Accessibility.ForNavigationProperty(navProp)),
             navProp.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many ? ("ICollection<" + endType + ">") : endType,
             _code.Escape(navProp),
             _code.SpaceAfter(Accessibility.ForGetter(navProp)),
-            _code.SpaceAfter(Accessibility.ForSetter(navProp)));
+			navProp.ToEndMember.RelationshipMultiplicity == RelationshipMultiplicity.Many ? "private" : "",
+            _code.SpaceAfter(Accessibility.ForSetter(navProp))
+			
+			
+			);
     }
     
     public string AccessibilityAndVirtual(string accessibility)

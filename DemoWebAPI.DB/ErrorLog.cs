@@ -12,8 +12,12 @@ namespace DemoWebAPI.DB
     using System;
     using System.Collections.Generic;
     
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    
     public partial class ErrorLog : BaseEntity
     {
+        [Key]
         public int ErrorLogID { get; set; }
         public System.DateTime ErrorTime { get; set; }
         public string UserName { get; set; }

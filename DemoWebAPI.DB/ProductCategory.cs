@@ -12,6 +12,9 @@ namespace DemoWebAPI.DB
     using System;
     using System.Collections.Generic;
     
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    
     public partial class ProductCategory : BaseEntity
     {
         public ProductCategory()
@@ -20,14 +23,15 @@ namespace DemoWebAPI.DB
             this.ProductCategory1 = new HashSet<ProductCategory>();
         }
     
+        [Key]
         public int ProductCategoryID { get; set; }
         public Nullable<int> ParentProductCategoryID { get; set; }
         public string Name { get; set; }
         public System.Guid rowguid { get; set; }
         public System.DateTime ModifiedDate { get; set; }
     
-        public virtual ICollection<Product> Products { get; set; }
-        public virtual ICollection<ProductCategory> ProductCategory1 { get; set; }
-        public virtual ProductCategory ProductCategory2 { get; set; }
+        public virtual ICollection<Product> Products { get; private set; }
+        public virtual ICollection<ProductCategory> ProductCategory1 { get; private set; }
+        public virtual ProductCategory ProductCategory2 { get;  set; }
     }
 }

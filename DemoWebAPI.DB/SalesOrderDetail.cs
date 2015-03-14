@@ -12,9 +12,16 @@ namespace DemoWebAPI.DB
     using System;
     using System.Collections.Generic;
     
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    
     public partial class SalesOrderDetail : BaseEntity
     {
+        [Key]
+        [Column(Order=1)]
         public int SalesOrderID { get; set; }
+        [Key]
+        [Column(Order=2)]
         public int SalesOrderDetailID { get; set; }
         public short OrderQty { get; set; }
         public int ProductID { get; set; }
@@ -24,7 +31,7 @@ namespace DemoWebAPI.DB
         public System.Guid rowguid { get; set; }
         public System.DateTime ModifiedDate { get; set; }
     
-        public virtual Product Product { get; set; }
-        public virtual SalesOrderHeader SalesOrderHeader { get; set; }
+        public virtual Product Product { get;  set; }
+        public virtual SalesOrderHeader SalesOrderHeader { get;  set; }
     }
 }

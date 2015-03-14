@@ -17,6 +17,11 @@ namespace WebAPI.Areas.HelpPage
         private const string MethodExpression = "/doc/members/member[@name='M:{0}']";
         private const string ParameterExpression = "param[@name='{0}']";
 
+
+        public string GetResponseDocumentation(HttpActionDescriptor actionDescriptor)
+        {
+            return string.Format("{0}", GetMethodNode(actionDescriptor));
+        }
         /// <summary>
         /// Initializes a new instance of the <see cref="XmlDocumentationProvider"/> class.
         /// </summary>
@@ -45,6 +50,25 @@ namespace WebAPI.Areas.HelpPage
 
             return null;
         }
+        public virtual string GetDocumentation(HttpControllerDescriptor controllerDescriptor)
+        {
+            if (controllerDescriptor != null)
+            {
+                XPathNavigator methodNode = GetMethodNode(controllerDescriptor);
+                if (methodNode != null)
+                {
+                    string parameterName = controllerDescriptor.ControllerType.Name;
+                    XPathNavigator parameterNode = methodNode.SelectSingleNode(String.Format(CultureInfo.InvariantCulture, ParameterExpression, parameterName));
+                    if (parameterNode != null)
+                    {
+                        return parameterNode.Value.Trim();
+                    }
+                }
+            }
+
+            return null;
+        }
+
 
         public virtual string GetDocumentation(HttpParameterDescriptor parameterDescriptor)
         {
@@ -66,6 +90,9 @@ namespace WebAPI.Areas.HelpPage
             return null;
         }
 
+
+
+
         private XPathNavigator GetMethodNode(HttpActionDescriptor actionDescriptor)
         {
             ReflectedHttpActionDescriptor reflectedActionDescriptor = actionDescriptor as ReflectedHttpActionDescriptor;
@@ -77,6 +104,19 @@ namespace WebAPI.Areas.HelpPage
 
             return null;
         }
+
+
+        private XPathNavigator GetMethodNode(HttpControllerDescriptor controllerDescriptor)
+        {
+            if (controllerDescriptor != null)
+            {
+                string selectExpression = String.Format(CultureInfo.InvariantCulture, MethodExpression, controllerDescriptor.ControllerName);
+                return _documentNavigator.SelectSingleNode(selectExpression);
+            }
+
+            return null;
+        }
+
 
         private static string GetMemberName(MethodInfo method)
         {
@@ -108,5 +148,17 @@ namespace WebAPI.Areas.HelpPage
 
             return type.FullName;
         }
+        //private XPathNavigator GetMethodNode(HttpControllerDescriptor controllerDescriptor)
+        //{
+        //    if (controllerDescriptor != null)
+        //    {
+        //        string selectExpression = String.Format(CultureInfo.InvariantCulture, MethodExpression, controllerDescriptor.ControllerName);// GetMemberName(reflectedActionDescriptor.MethodInfo));
+        //        return _documentNavigator.SelectSingleNode(selectExpression);
+        //    }
+
+        //    return null;
+        //}
+
+
     }
 }

@@ -52,6 +52,28 @@ using System.Linq;
 <#
 }
 #>
+/*
+public static class ODataConfig
+{
+        public static Microsoft.Data.Edm.IEdmModel GenerateEdmModel()
+        {
+            var builder = new ODataConventionModelBuilder();
+
+    <#
+        foreach (var entitySet in container.BaseEntitySets.OfType<EntitySet>())
+        {
+    #>
+        <#=codeStringGenerator.ODataConfig(entitySet)#>
+    <#
+        }
+
+        #>
+           
+            return builder.GetEdmModel();
+
+        }
+}
+*/
 
 <#=Accessibility.ForType(container)#> partial class <#=code.Escape(container)#> : DbContext
 {
@@ -304,6 +326,15 @@ public class CodeStringGenerator
             callParams);
     }
     
+    public string ODataConfig(EntitySet entitySet)
+    {
+            return string.Format(
+                CultureInfo.InvariantCulture,
+                "builder.EntitySet<{1}>(\"{2}\");",
+            Accessibility.ForReadOnlyProperty(entitySet),
+            _typeMapper.GetTypeName(entitySet.ElementType),
+            _code.Escape(entitySet));
+    }
     public string DbSet(EntitySet entitySet)
     {
         return string.Format(

@@ -12,6 +12,9 @@ namespace DemoWebAPI.DB
     using System;
     using System.Collections.Generic;
     
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    
     public partial class Address : BaseEntity
     {
         public Address()
@@ -21,6 +24,7 @@ namespace DemoWebAPI.DB
             this.SalesOrderHeaders1 = new HashSet<SalesOrderHeader>();
         }
     
+        [Key]
         public int AddressID { get; set; }
         public string AddressLine1 { get; set; }
         public string AddressLine2 { get; set; }
@@ -31,8 +35,8 @@ namespace DemoWebAPI.DB
         public System.Guid rowguid { get; set; }
         public System.DateTime ModifiedDate { get; set; }
     
-        public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; }
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; set; }
-        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders1 { get; set; }
+        public virtual ICollection<CustomerAddress> CustomerAddresses { get; private set; }
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders { get; private set; }
+        public virtual ICollection<SalesOrderHeader> SalesOrderHeaders1 { get; private set; }
     }
 }

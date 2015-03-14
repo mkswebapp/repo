@@ -12,6 +12,9 @@ namespace DemoWebAPI.DB
     using System;
     using System.Collections.Generic;
     
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    
     public partial class ProductDescription : BaseEntity
     {
         public ProductDescription()
@@ -19,11 +22,12 @@ namespace DemoWebAPI.DB
             this.ProductModelProductDescriptions = new HashSet<ProductModelProductDescription>();
         }
     
+        [Key]
         public int ProductDescriptionID { get; set; }
         public string Description { get; set; }
         public System.Guid rowguid { get; set; }
         public System.DateTime ModifiedDate { get; set; }
     
-        public virtual ICollection<ProductModelProductDescription> ProductModelProductDescriptions { get; set; }
+        public virtual ICollection<ProductModelProductDescription> ProductModelProductDescriptions { get; private set; }
     }
 }
